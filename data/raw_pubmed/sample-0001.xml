@@ -1,0 +1,285 @@
+<PubmedArticle>
+<MedlineCitation Status="MEDLINE" Owner="NLM">
+    <PMID Version="1">7349888</PMID>
+    <DateCompleted>
+        <Year>1980</Year>
+        <Month>02</Month>
+        <Day>26</Day>
+    </DateCompleted>
+    <DateRevised>
+        <Year>2011</Year>
+        <Month>04</Month>
+        <Day>28</Day>
+    </DateRevised>
+    <Article PubModel="Print">
+        <Journal>
+            <ISSN IssnType="Print">0008-5472</ISSN>
+            <JournalIssue CitedMedium="Print">
+                <Volume>40</Volume>
+                <Issue>1</Issue>
+                <PubDate>
+                    <Year>1980</Year>
+                    <Month>Jan</Month>
+                </PubDate>
+            </JournalIssue>
+            <Title>Cancer research</Title>
+            <ISOAbbreviation>Cancer Res</ISOAbbreviation>
+        </Journal>
+        <ArticleTitle>An evaluation of chemicals and industrial processes associated with cancer in humans based on human and animal data: IARC Monographs Volumes 1 to 20.</ArticleTitle>
+        <Pagination>
+            <MedlinePgn>1-12</MedlinePgn>
+        </Pagination>
+        <Abstract>
+            <AbstractText>An international ad hoc Working Group of experts in cancer research met at the International Agency for Research on Cancer (IARC) in January 1979 to evaluate the data on human and experimental animal carcinogenicity for 54 chemicals, groups of chemicals, and industrial processes. Monographs for these chemicals were published in Vols. 1 to 20 of the IARC Monographs on the Evaluation of the Carcinogenic Risk of Chemicals to Humans. Based on evidence from human studies, 18 of the 54 chemicals or industrial processes are human carcinogens. A further 18 chemicals are probably carcinogenic for humans, although the data were considered not adequate to establish a causal association. To reflect differing degrees of evidence of carcinogenicity within this group, the chemicals were further subdivided, with 6 chemicals exhibiting a high degree of evidence and 12 chemicals exhibiting a lower degree. Data on the remaining 18 chemicals were considered insufficient to allow any evaluation of carcinogenicity. The report summarizes the background, purpose, and overall conclusions of the Working Group. The evidence supporting the evaluations is given in the "Appendix."</AbstractText>
+        </Abstract>
+        <AuthorList CompleteYN="Y">
+            <Author ValidYN="Y">
+                <CollectiveName Investigators="group-1-7349888.1">Report of an IARC Working Group</CollectiveName>
+            </Author>
+            <Author ValidYN="Y">
+                <LastName>Althouse</LastName>
+                <ForeName>R</ForeName>
+                <Initials>R</Initials>
+            </Author>
+            <Author ValidYN="Y">
+                <LastName>Huff</LastName>
+                <ForeName>J</ForeName>
+                <Initials>J</Initials>
+            </Author>
+            <Author ValidYN="Y">
+                <LastName>Tomatis</LastName>
+                <ForeName>L</ForeName>
+                <Initials>L</Initials>
+            </Author>
+            <Author ValidYN="Y">
+                <LastName>Wllbourn</LastName>
+                <ForeName>J</ForeName>
+                <Initials>J</Initials>
+            </Author>
+        </AuthorList>
+        <Language>eng</Language>
+        <GrantList CompleteYN="Y">
+            <Grant>
+                <GrantID>N01 CP 45608</GrantID>
+                <Acronym>CP</Acronym>
+                <Agency>NCI NIH HHS</Agency>
+                
+            </Grant>
+        </GrantList>
+        <PublicationTypeList>
+            <PublicationType UI="D016428">Journal Article</PublicationType>
+            <PublicationType UI="D052061">Research Support, N.I.H., Extramural</PublicationType>
+        </PublicationTypeList>
+    </Article>
+    <MedlineJournalInfo>
+        <Country>United States</Country>
+        <MedlineTA>Cancer Res</MedlineTA>
+        <NlmUniqueID>2984705R</NlmUniqueID>
+        <ISSNLinking>0008-5472</ISSNLinking>
+    </MedlineJournalInfo>
+    <ChemicalList>
+        <Chemical>
+            <RegistryNumber>0</RegistryNumber>
+            <NameOfSubstance UI="D002274">Carcinogens, Environmental</NameOfSubstance>
+        </Chemical>
+    </ChemicalList>
+    <CitationSubset>IM</CitationSubset>
+    <MeshHeadingList>
+        <MeshHeading>
+            <DescriptorName UI="D000328" MajorTopicYN="N">Adult</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D000818" MajorTopicYN="N">Animals</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D002274" MajorTopicYN="N">Carcinogens, Environmental</DescriptorName>
+            <QualifierName UI="Q000506" MajorTopicYN="Y">poisoning</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D002648" MajorTopicYN="N">Child</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D006224" MajorTopicYN="N">Cricetinae</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D004285" MajorTopicYN="N">Dogs</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D004812" MajorTopicYN="N">Epidemiologic Methods</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D005260" MajorTopicYN="N">Female</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D006801" MajorTopicYN="N">Humans</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D007221" MajorTopicYN="Y">Industry</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D007390" MajorTopicYN="N">International Agencies</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D008297" MajorTopicYN="N">Male</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D051379" MajorTopicYN="N">Mice</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D008875" MajorTopicYN="N">Middle Aged</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D009369" MajorTopicYN="N">Neoplasms</DescriptorName>
+            <QualifierName UI="Q000139" MajorTopicYN="Y">chemically induced</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D009374" MajorTopicYN="N">Neoplasms, Experimental</DescriptorName>
+            <QualifierName UI="Q000139" MajorTopicYN="N">chemically induced</QualifierName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D011247" MajorTopicYN="N">Pregnancy</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D011817" MajorTopicYN="N">Rabbits</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D051381" MajorTopicYN="N">Rats</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D012107" MajorTopicYN="N">Research Design</DescriptorName>
+        </MeshHeading>
+        <MeshHeading>
+            <DescriptorName UI="D012306" MajorTopicYN="N">Risk</DescriptorName>
+        </MeshHeading>
+    </MeshHeadingList>
+    <InvestigatorList ID="group-1-7349888.1">
+        <Investigator ValidYN="Y">
+            <LastName>Armitage</LastName>
+            <ForeName>P</ForeName>
+            <Initials>P</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Armstrong</LastName>
+            <ForeName>B K</ForeName>
+            <Initials>BK</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Brown</LastName>
+            <ForeName>A L</ForeName>
+            <Initials>AL</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Bogovski</LastName>
+            <ForeName>P</ForeName>
+            <Initials>P</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Cole</LastName>
+            <ForeName>P</ForeName>
+            <Initials>P</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Day</LastName>
+            <ForeName>N E</ForeName>
+            <Initials>NE</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Della Porta</LastName>
+            <ForeName>G</ForeName>
+            <Initials>G</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Griesemer</LastName>
+            <ForeName>R A</ForeName>
+            <Initials>RA</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Hirohata</LastName>
+            <ForeName>T</ForeName>
+            <Initials>T</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Hunter</LastName>
+            <ForeName>W J</ForeName>
+            <Initials>WJ</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Jayakar</LastName>
+            <ForeName>S D</ForeName>
+            <Initials>SD</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Massé</LastName>
+            <ForeName>L</ForeName>
+            <Initials>L</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Pike</LastName>
+            <ForeName>M C</ForeName>
+            <Initials>MC</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Preussemann</LastName>
+            <ForeName>R</ForeName>
+            <Initials>R</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Schneiderman</LastName>
+            <ForeName>M A</ForeName>
+            <Initials>MA</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Teppo</LastName>
+            <ForeName>L</ForeName>
+            <Initials>L</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Thomas</LastName>
+            <ForeName>D B</ForeName>
+            <Initials>DB</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Wagoner</LastName>
+            <ForeName>J K</ForeName>
+            <Initials>JK</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Wald</LastName>
+            <ForeName>N J</ForeName>
+            <Initials>NJ</Initials>
+        </Investigator>
+        <Investigator ValidYN="Y">
+            <LastName>Weinstein</LastName>
+            <ForeName>I B</ForeName>
+            <Initials>IB</Initials>
+        </Investigator>
+    </InvestigatorList>
+</MedlineCitation>
+<PubmedData>
+    <History>
+        <PubMedPubDate PubStatus="pubmed">
+            <Year>1980</Year>
+            <Month>1</Month>
+            <Day>1</Day>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="medline">
+            <Year>1980</Year>
+            <Month>1</Month>
+            <Day>1</Day>
+            <Hour>0</Hour>
+            <Minute>1</Minute>
+        </PubMedPubDate>
+        <PubMedPubDate PubStatus="entrez">
+            <Year>1980</Year>
+            <Month>1</Month>
+            <Day>1</Day>
+            <Hour>0</Hour>
+            <Minute>0</Minute>
+        </PubMedPubDate>
+    </History>
+    <PublicationStatus>ppublish</PublicationStatus>
+    <ArticleIdList>
+        <ArticleId IdType="pubmed">7349888</ArticleId>
+    </ArticleIdList>
+</PubmedData>
+</PubmedArticle>

@@ -1,0 +1,161 @@
+{% extends 'nlp_app/base.html' %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        {% if results %}
+            // --- Graphique des Unigrammes (Top 10 Mots) ---
+            const ctxWords = document.getElementById('wordsChart').getContext('2d');
+            new Chart(ctxWords, {
+                type: 'bar',
+                data: {
+                    labels: [{% for word, count in results.lm_data.top_words %} "{{ word }}", {% endfor %}],
+                    datasets: [{
+                        label: 'Fréquence d\'apparition',
+                        data: [{% for word, count in results.lm_data.top_words %} {{ count }}, {% endfor %}],
+                        backgroundColor: 'rgba(13, 110, 253, 0.6)',
+                        borderColor: 'rgb(13, 110, 253)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            // --- Graphique des Bigrammes (Top 5) ---
+            const ctxBigrams = document.getElementById('bigramsChart').getContext('2d');
+            new Chart(ctxBigrams, {
+                type: 'doughnut',
+                data: {
+                    labels: [{% for gram, count in results.lm_data.top_bigrams|slice:":5" %} "{{ gram }}", {% endfor %}],
+                    datasets: [{
+                        data: [{% for gram, count in results.lm_data.top_bigrams|slice:":5" %} {{ count }}, {% endfor %}],
+                        backgroundColor: [
+                            '#0d6efd', '#198754', '#0dcaf0', '#ffc107', '#dc3545'
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' }
+                    }
+                }
+            });
+        {% endif %}
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-6 fw-bold text-primary">Méthodologie & Architecture du Système</h1>
+            <p class="text-muted">Analyse statistique et algorithmes utilisés pour le traitement de texte.</p>
+        </div>
+    </div>
+
+    {% if results %}
+    <div class="row mb-5 g-4">
+        <div class="col-md-7">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-white fw-bold border-bottom">
+                    <i class="fas fa-chart-bar text-primary me-2"></i>Top 10 des mots les plus fréquents (Unigrammes)
+                </div>
+                <div class="card-body">
+                    <canvas id="wordsChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-white fw-bold border-bottom">
+                    <i class="fas fa-chart-pie text-success me-2"></i>Distribution des 5 Bigrammes principaux
+                </div>
+                <div class="card-body">
+                    <canvas id="bigramsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="alert alert-info shadow-sm text-center mb-5">
+        <i class="fas fa-info-circle me-2"></i> 
+        Aucune donnée d'analyse récente trouvée. 
+        Veuillez <a href="{% url 'nlp_app:index' %}" class="fw-bold">lancer une analyse</a> pour générer les graphiques.
+    </div>
+    {% endif %}
+
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-white fw-bold border-bottom">
+                    <i class="fas fa-tags text-primary me-2"></i>Part-of-Speech (POS) Tagging
+                </div>
+                <div class="card-body">
+                    <h6 class="fw-bold">Modèle de Markov Caché (HMM)</h6>
+                    <p class="card-text text-secondary small">
+                        Le système utilise un HMM probabiliste pour assigner des étiquettes grammaticales. Il repose sur :
+                    </p>
+                    <ul class="list-group list-group-flush small mb-3">
+                        <li class="list-group-item"><strong>Probabilité de Transition :</strong> P(Tag | Tag précédent)</li>
+                        <li class="list-group-item"><strong>Probabilité d'Émission :</strong> P(Mot | Tag)</li>
+                    </ul>
+                    <div class="alert alert-light border small">
+                        <strong>Décodage :</strong> L'algorithme de <em>Viterbi</em> est utilisé pour trouver la séquence d'étiquettes la plus probable.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-header bg-white fw-bold border-bottom">
+                    <i class="fas fa-project-diagram text-success me-2"></i>Modélisation Thématique
+                </div>
+                <div class="card-body">
+                    <h6 class="fw-bold">Latent Dirichlet Allocation (LDA)</h6>
+                    <p class="card-text text-secondary small">
+                        Une approche d'apprentissage non supervisé qui découvre des "sujets" abstraits dans le texte.
+                    </p>
+                    <ul class="small text-muted">
+                        <li>Le texte est converti en une matrice Bag-of-Words (BoW).</li>
+                        <li>Les mots vides (stopwords) sont supprimés pour améliorer la précision.</li>
+                        <li>Le modèle regroupe les mots qui co-occurrent fréquemment.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+             <div class="card shadow-sm border-0 bg-dark text-white">
+                <div class="card-header border-secondary text-white-50 small text-uppercase">
+                    Flux de traitement des données
+                </div>
+                <div class="card-body font-monospace small">
+                    <span class="text-info">Entrée</span> (XML/Texte) 
+                    <i class="fas fa-chevron-right mx-2 opacity-50"></i> 
+                    <span class="text-warning">Prétraitement</span> (Nettoyage/Laplace)
+                    <i class="fas fa-chevron-right mx-2 opacity-50"></i> 
+                    <span class="text-warning">Étiquetage</span> (HMM/Viterbi)
+                    <i class="fas fa-chevron-right mx-2 opacity-50"></i> 
+                    <span class="text-warning">Analyse</span> (NER/Syntaxe)
+                    <i class="fas fa-chevron-right mx-2 opacity-50"></i> 
+                    <span class="text-success">Visualisation</span> (Chart.js/Bootstrap)
+                </div>
+             </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

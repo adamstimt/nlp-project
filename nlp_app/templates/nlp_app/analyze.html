@@ -1,0 +1,394 @@
+{% extends 'nlp_app/base.html' %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        {% if results %}
+            // --- Unigrams Chart (Top 10 Words) ---
+            const ctxWords = document.getElementById('wordsChart').getContext('2d');
+            new Chart(ctxWords, {
+                type: 'bar',
+                data: {
+                    labels: [{% for word in results.lm_data.unigrams|slice:":10" %} "{{ word.word }}", {% endfor %}],
+                    datasets: [{
+                        label: 'Frequency',
+                        data: [{% for word in results.lm_data.unigrams|slice:":10" %} {{ word.count }}, {% endfor %}],
+                        backgroundColor: 'rgba(13, 110, 253, 0.6)',
+                        borderColor: 'rgb(13, 110, 253)',
+                        borderWidth: 1
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true } } 
+                }
+            });
+
+            // --- Bigrams Chart (Top 5 Bigrams) ---
+            const ctxBigrams = document.getElementById('bigramsChart').getContext('2d');
+            new Chart(ctxBigrams, {
+                type: 'doughnut',
+                data: {
+                    labels: [{% for item in results.lm_data.bigrams|slice:":5" %} "{{ item.w1 }} {{ item.w2 }}", {% endfor %}],
+                    datasets: [{
+                        data: [{% for item in results.lm_data.bigrams|slice:":5" %} {{ item.count }}, {% endfor %}],
+                        backgroundColor: ['#0d6efd', '#198754', '#0dcaf0', '#ffc107', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        {% endif %}
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+
+<div class="card mb-4 border-0 shadow-sm bg-light">
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data" class="row g-3 align-items-center">
+            {% csrf_token %}
+            <div class="col-auto">
+                <span class="fw-bold text-secondary">New Analysis:</span>
+            </div>
+            <div class="col-auto flex-grow-1">
+                {{ form.raw_text }}
+            </div>
+            <div class="col-auto">
+                 <button type="submit" class="btn btn-primary">Analyze Again</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if results %}
+
+    <div class="row text-center mb-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-4 border-primary">
+                <div class="card-body">
+                    <h2 class="display-6">{{ results.stats_data.total_sentences }}</h2>
+                    <span class="text-muted text-uppercase small">Sentences</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-4 border-success">
+                <div class="card-body">
+                    <h2 class="display-6">{{ results.stats_data.total_tokens }}</h2>
+                    <span class="text-muted text-uppercase small">Total Tokens</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-4 border-info">
+                <div class="card-body">
+                    <h2 class="display-6">{{ results.stats_data.lexical_diversity }}</h2>
+                    <span class="text-muted text-uppercase small">Lexical Diversity</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card shadow-sm border-start border-4 border-warning">
+                <div class="card-body">
+                    <h2 class="display-6">{{ results.stats_data.avg_sentence_length }}</h2>
+                    <span class="text-muted text-uppercase small">Avg Sent Length</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs mb-3" id="nlpTabs" role="tablist">
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#raw" type="button">Original Text</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#parsing" type="button">Syntax Trees</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#annotated" type="button">Annotated Text (POS)</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#ner" type="button">Named Entities (BIO)</button>
+        </li>
+        
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#topics" type="button">Language Model & Stats</button>
+        </li>
+        <li class="nav-item">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#methodology" type="button">Visual Stats & Methodology</button>
+        </li>
+        
+    </ul>
+
+    <div class="tab-content" id="nlpTabsContent">
+        
+        <div class="tab-pane fade show active" id="annotated">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    {% for sentence in results.ner_data %}
+                        <div class="mb-3 lh-lg">
+                            <span class="badge bg-secondary me-2">Sent {{ forloop.counter }}</span>
+                            {% for word, pos, ner in sentence %}
+                                <span class="d-inline-block text-center border rounded px-1 mx-1 mb-1" 
+                                      style="background-color: {% if ner != 'O' %}#ffeeba{% else %}#f8f9fa{% endif %};">
+                                    <div class="fw-bold text-dark">{{ word }}</div>
+                                    <div style="font-size: 0.65rem;" class="text-primary">{{ pos }}</div>
+                                </span>
+                            {% endfor %}
+                        </div>
+                        <hr>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="ner">
+            <div class="card shadow-sm border-0">
+                <div class="card-body">
+                    {% for sentence in results.ner_data %}
+                        <div class="mb-5">
+                            <h5 class="fw-bold text-primary mb-3">
+                                <i class="fas fa-arrow-right me-2"></i>Sentence {{ forloop.counter }}
+                            </h5>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-hover shadow-sm">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th style="width: 20%;">Word</th>
+                                            <th style="width: 20%;">BIO Tag</th>
+                                            <th style="width: 60%;">Description</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for word, pos, ner in sentence %}
+                                            <tr class="{% if ner != 'O' %}table-warning{% endif %}">
+                                                <td class="fw-bold">{{ word }}</td>
+                                                <td>
+                                                    {% if ner == 'O' %}
+                                                        <span class="badge bg-light text-secondary border">O</span>
+                                                    {% else %}
+                                                        <span class="badge bg-danger">{{ ner }}</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td class="small text-muted">
+                                                    {% if ner == 'O' %}
+                                                        Outside
+                                                    {% elif 'PERSON' in ner %}
+                                                        <i class="fas fa-user me-1"></i> Person Entity
+                                                    {% elif 'GPE' in ner or 'LOCATION' in ner %}
+                                                        <i class="fas fa-map-marker-alt me-1"></i> Location / Geopolitical Entity
+                                                    {% elif 'ORGANIZATION' in ner %}
+                                                        <i class="fas fa-building me-1"></i> Organization
+                                                    {% elif 'DISEASE' in ner %}
+                                                        <i class="fas fa-virus me-1"></i> Disease or Medical Condition
+                                                    {% elif 'GENE' in ner or 'PROTEIN' in ner %}
+                                                        <i class="fas fa-dna me-1"></i> Gene / Protein
+                                                    {% elif 'CHEMICAL' in ner %}
+                                                        <i class="fas fa-flask me-1"></i> Chemical Compound
+                                                    {% else %}
+                                                        <i class="fas fa-tag me-1"></i> Named Entity
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="parsing">
+            <div class="accordion" id="accordionTrees">
+                {% for item in results.parse_data %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}">
+                                Sentence {{ forloop.counter }} Parse Tree
+                            </button>
+                        </h2>
+                        <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionTrees">
+                            <div class="accordion-body bg-white">
+                                <pre style="font-family: 'Consolas', 'Courier New', monospace; font-size: 1rem; line-height: 1.2;">{{ item.tree_string }}</pre>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="topics">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <div class="alert alert-primary d-flex align-items-center justify-content-between shadow-sm">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-calculator fa-2x me-3"></i>
+                            <div>
+                                <h5 class="mb-0">Global Perplexity: <strong>{{ results.lm_data.perplexity }}</strong></h5>
+                                <small class="mb-0">Calculated using Laplace Smoothing (Add-1). Lower is better.</small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <div class="badge bg-light text-dark border">Vocab (V): {{ results.lm_data.vocab_size }}</div>
+                            <div class="badge bg-light text-dark border">Tokens (N): {{ results.lm_data.total_tokens }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-dark text-white d-flex justify-content-between">
+                            <span>Unigrams (w)</span> <small>P(w)</small>
+                        </div>
+                        <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-sm table-striped table-hover mb-0" style="font-size: 0.85rem;">
+                                <thead class="table-light sticky-top"><tr><th>Word</th><th>Count</th><th class="text-end">Prob</th></tr></thead>
+                                <tbody>
+                                    {% for item in results.lm_data.unigrams %}
+                                    <tr>
+                                        <td class="fw-bold text-secondary">{{ item.word }}</td>
+                                        <td>{{ item.count }}</td>
+                                        <td class="text-end font-monospace text-primary">{{ item.prob_fmt }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-dark text-white d-flex justify-content-between">
+                            <span>Bigrams (w1, w2)</span> <small>P(w2 | w1)</small>
+                        </div>
+                        <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-sm table-striped table-hover mb-0" style="font-size: 0.85rem;">
+                                <thead class="table-light sticky-top"><tr><th>History</th><th>Next</th><th>Count</th><th class="text-end">Prob</th></tr></thead>
+                                <tbody>
+                                    {% for item in results.lm_data.bigrams %}
+                                    <tr>
+                                        <td class="fw-bold text-secondary">{{ item.w1 }}</td>
+                                        <td>{{ item.w2 }}</td>
+                                        <td>{{ item.count }}</td>
+                                        <td class="text-end font-monospace text-primary">{{ item.prob_fmt }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 mb-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-secondary text-white">Sentence Probabilities</div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="table-light"><tr><th style="width: 70%;">Sentence</th><th class="text-end">Total Prob</th><th class="text-end">Log Prob</th></tr></thead>
+                                    <tbody>
+                                        {% for sent in results.lm_data.sentence_probs %}
+                                        <tr>
+                                            <td class="text-muted small fst-italic">"{{ sent.text }}"</td>
+                                            <td class="text-end font-monospace fw-bold">{{ sent.prob }}</td>
+                                            <td class="text-end font-monospace">{{ sent.log_prob }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-header">Extracted Topics (LDA)</div>
+                        <div class="card-body">
+                            {% for topic, words in results.topic_data.items %}
+                                <span class="fw-bold text-primary me-2">{{ topic }}:</span>
+                                {% for w in words %}
+                                    <span class="badge bg-light text-dark border me-1">{{ w }}</span>
+                                {% endfor %}
+                                <br>
+                            {% empty %}
+                                <span class="text-muted">No topics extracted.</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="methodology">
+            <div class="row g-4 mb-4">
+                <div class="col-md-7">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-header bg-white fw-bold border-bottom">Word Frequency (Unigrams)</div>
+                        <div class="card-body" style="height: 300px;"><canvas id="wordsChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-header bg-white fw-bold border-bottom">Top 5 Bigram Distribution</div>
+                        <div class="card-body" style="height: 300px;"><canvas id="bigramsChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-primary"><i class="fas fa-tags me-2"></i>POS Tagging</h6>
+                            <p class="small text-muted">HMM-based tagging using the Viterbi algorithm to maximize sequence probability.</p>
+                            <div class="bg-light p-2 rounded font-monospace x-small" style="font-size: 0.75rem;">
+                                Transition: $P(T_i|T_{i-1})$ | Emission: $P(W_i|T_i)$
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body">
+                            <h6 class="fw-bold text-success"><i class="fas fa-project-diagram me-2"></i>Topic Modeling</h6>
+                            <p class="small text-muted">Latent Dirichlet Allocation (LDA) to extract underlying themes.</p>
+                            <div class="d-flex flex-wrap gap-1">
+                                {% for topic, words in results.topic_data.items %}
+                                    <span class="badge bg-light text-dark border">{{ topic }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="raw">
+            <div class="card card-body bg-light">
+                <pre style="white-space: pre-wrap;">{{ results.original_text }}</pre>
+            </div>
+        </div>
+
+    </div>
+
+{% else %}
+    <div class="alert alert-info text-center mt-5">
+        <i class="fas fa-arrow-up me-2"></i> Use the form above to start analyzing.
+    </div>
+{% endif %}
+
+{% endblock %}
